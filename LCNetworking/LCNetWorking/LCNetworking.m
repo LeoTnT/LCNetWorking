@@ -8,7 +8,8 @@
 
 #import "LCNetworking.h"
 
-NSString * const ResponseErrorKey = @"com.alamofire.serialization.response.error.response";
+NSString *const ResponseErrorKey = @"com.alamofire.serialization.response.error.response";
+NSInteger const Interval = 3;
 
 @interface LCNetworking ()
 
@@ -33,7 +34,7 @@ NSString * const ResponseErrorKey = @"com.alamofire.serialization.response.error
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:pathStr]];
     
-    request.timeoutInterval = 3;
+    request.timeoutInterval = Interval;
     
     NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -68,6 +69,7 @@ NSString * const ResponseErrorKey = @"com.alamofire.serialization.response.error
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     [request setHTTPMethod:@"POST"];
     
+    //把字典中的参数进行拼接
     NSString *body = [self dealWithParam:params];
     NSData *bodyData = [body dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -78,7 +80,7 @@ NSString * const ResponseErrorKey = @"com.alamofire.serialization.response.error
     // 设置本次请求请求体的长度(因为服务器会根据你这个设定的长度去解析你的请求体中的参数内容)
     [request setValue:[NSString stringWithFormat:@"%ld", bodyData.length] forHTTPHeaderField:@"Content-Length"];
     //设置请求最长时间
-    request.timeoutInterval = 3;
+    request.timeoutInterval = Interval;
     
     NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
      
