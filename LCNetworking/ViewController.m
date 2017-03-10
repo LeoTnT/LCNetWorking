@@ -86,7 +86,6 @@
         make.size.mas_equalTo(btn1);
         
     }];
-    
 }
 
 @end
